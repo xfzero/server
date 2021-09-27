@@ -1,0 +1,60 @@
+syntax = "proto3";
+package in;
+option go_package = "common/in";
+
+enum ID {
+    GRPC_GM_CMD_DEFAULT = 0;
+    GRPC_GM_CMD_ACTIVITY = 1; //通用类活动
+}
+
+service WebService {
+    rpc GRPCTest (TestRequest) returns (TestReplay) {}
+    rpc GMCmd (GMRequest) returns (GMReplay) {}
+}
+
+message TestRequest {
+    string name = 1;
+}
+
+message TestReplay {
+    string replay = 1;
+}
+
+message GMRequest {
+    uint32 cmd = 1;
+    uint32 sid = 2;
+    GMRequestByte data = 3;
+}
+
+//所有的协议对象
+message GMRequestByte {
+    repeated uint32 modules = 1;
+    Activity activity = 2;
+}
+
+message GMReplay {
+    uint32 ret = 1;
+    string desc = 2;
+    uint32 cmd = 3;
+    uint32 sid = 4;
+    GMReplayByte data = 5;
+    string json_data = 6;
+}
+
+message GMReplayByte {
+    repeated string redis_replay = 1;
+}
+
+//通用类活动
+message Activity {
+    repeated ActivityInfo add = 1;
+    repeated uint32 del_id = 2;
+}
+
+message ActivityInfo {
+    uint32 id = 1;    //活动唯一id
+    uint32 type = 2;  //活动类型
+    string name = 3;  //活动名字
+    uint32 start = 4; //开始时间
+    uint32 end = 5;   //活动结束时间
+}

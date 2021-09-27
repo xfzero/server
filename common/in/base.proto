@@ -1,0 +1,9 @@
+syntax = "proto3";
+package in;
+option go_package = "common/in";
+
+message StringMap {
+  unit64 key = 1;
+  string value = 2;
+}
+
